@@ -11,40 +11,37 @@ export default async function handler(req, res) {
     if (err) return res.status(500).json({ error: err.message });
 
     const file = files.slip[0];
-    const auth = new google.auth.GoogleAuth({
-      credentials: JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON),
-      scopes: [
-        'https://www.googleapis.com/auth/spreadsheets',
-        'https://www.googleapis.com/auth/drive.file' // เพิ่มสิทธิ์ Drive
-      ],
-    });
+    const base64File = fs.readFileSync(file.filepath).toString('base64');
 
     try {
-      // 1. อัปโหลดรูปขึ้น Google Drive
-      const drive = google.drive({ version: 'v3', auth });
-      const fileMetadata = {
-        name: file.originalFilename,
-        parents: ['15_LEt64HOd3oSINx3q3Dk4nhDJbnFe9J'] // ใส่ Folder ID ของคุณที่นี่
-      };
-      const media = {
-        mimeType: file.mimetype,
-        body: fs.createReadStream(file.filepath),
-      };
-      const driveRes = await drive.files.create({ requestBody: fileMetadata, media: media });
-      const fileUrl = `https://drive.google.com/open?id=${driveRes.data.id}`;
+      // --- ส่วนที่ 1: ส่งรูปไป Google Apps Script เพื่อขึ้น Drive ---
+      const gasResponse = await fetch('https://script.google.com/macros/s/AKfycbxoqoDb25Uuom2tZUpo_2Q2BkiurFUI-wyIhNXW21bhBgQp-6J4fH6eqvmC9F0dUYFC/exec', {
+        method: 'POST',
+        body: JSON.stringify({
+          fileData: base64File,
+          mimeType: file.mimetype,
+          fileName: file.originalFilename
+        })
+      });
+      const gasResult = await gasResponse.json(); // สมมติว่าคืนค่า { url: "..." }
 
-      // 2. บันทึกลง Google Sheets
+      // --- ส่วนที่ 2: ใช้บอท (Service Account) บันทึกลง Sheets ---
+      const auth = new google.auth.GoogleAuth({
+        credentials: JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON),
+        scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+      });
       const sheets = google.sheets({ version: 'v4', auth });
+      
       await sheets.spreadsheets.values.append({
         spreadsheetId: '1YSkEk2G9IyKQu0wELH1CjW6gtw83zBMyvC9_guJG4RA',
         range: 'Data!A:E',
         valueInputOption: 'USER_ENTERED',
         requestBody: {
-          values: [[new Date().toLocaleString('th-TH'), fields.xUsername[0], fields.rooms[0], fields.price[0], fileUrl]]
+          values: [[new Date().toLocaleString('th-TH'), fields.xUsername[0], fields.rooms[0], fields.price[0], gasResult.url]]
         }
       });
 
-      res.status(200).json({ status: "success", url: fileUrl });
+      res.status(200).json({ status: "success", url: gasResult.url });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
