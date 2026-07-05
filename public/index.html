@@ -96,13 +96,13 @@
                     <div class="space-y-4">
                         <div class="group border border-slate-800 rounded-2xl overflow-hidden shadow-lg bg-slate-950/50 transition-all duration-300 hover:border-indigo-500/50 hover:shadow-[0_0_20px_rgba(99,102,241,0.05)]">
                             <div class="relative overflow-hidden">
-                                <img src="image/phuket.jpg" alt="Phuket" class="w-full h-36 object-cover bg-slate-800 transition duration-500 group-hover:scale-105">
+                                <img src="image/phuket.jpg" alt="ห้องภูเก็ต" class="w-full h-36 object-cover bg-slate-800 transition duration-500 group-hover:scale-105">
                                 <div class="absolute inset-0 bg-gradient-to-t from-slate-955 to-transparent opacity-60"></div>
                             </div>
                             <label class="flex items-center justify-between p-4 cursor-pointer select-none">
                                 <div class="flex items-center space-x-3.5">
                                     <input type="checkbox" id="room-phuket" onchange="calculatePrice()" class="w-5 h-5 text-indigo-600 bg-slate-800 border-slate-700 rounded focus:ring-indigo-500 focus:ring-offset-slate-900">
-                                    <span class="font-bold text-slate-300 group-hover:text-slate-100 transition">1. Phuket</span>
+                                    <span class="font-bold text-slate-300 group-hover:text-slate-100 transition">1. ห้องภูเก็ต</span>
                                 </div>
                                 <span class="font-extrabold text-indigo-400 group-hover:text-indigo-300 text-lg">50 ฿</span>
                             </label>
@@ -110,13 +110,13 @@
 
                         <div class="group border border-slate-800 rounded-2xl overflow-hidden shadow-lg bg-slate-950/50 transition-all duration-300 hover:border-indigo-500/50 hover:shadow-[0_0_20px_rgba(99,102,241,0.05)]">
                             <div class="relative overflow-hidden">
-                                <img src="image/chiangmai.jpg" alt="Chiang Mai" class="w-full h-36 object-cover bg-slate-800 transition duration-500 group-hover:scale-105">
+                                <img src="image/chiangmai.jpg" alt="ห้องเชียงใหม่" class="w-full h-36 object-cover bg-slate-800 transition duration-500 group-hover:scale-105">
                                 <div class="absolute inset-0 bg-gradient-to-t from-slate-955 to-transparent opacity-60"></div>
                             </div>
                             <label class="flex items-center justify-between p-4 cursor-pointer select-none">
                                 <div class="flex items-center space-x-3.5">
                                     <input type="checkbox" id="room-chiangmai" onchange="calculatePrice()" class="w-5 h-5 text-indigo-600 bg-slate-800 border-slate-700 rounded focus:ring-indigo-500 focus:ring-offset-slate-900">
-                                    <span class="font-bold text-slate-300 group-hover:text-slate-100 transition">2. Chiang Mai</span>
+                                    <span class="font-bold text-slate-300 group-hover:text-slate-100 transition">2. ห้องเชียงใหม่</span>
                                 </div>
                                 <span class="font-extrabold text-indigo-400 group-hover:text-indigo-300 text-lg">50 ฿</span>
                             </label>
@@ -124,13 +124,13 @@
 
                         <div class="group border border-slate-800 rounded-2xl overflow-hidden shadow-lg bg-slate-950/50 transition-all duration-300 hover:border-indigo-500/50 hover:shadow-[0_0_20px_rgba(99,102,241,0.05)]">
                             <div class="relative overflow-hidden">
-                                <img src="image/girlcup.jpg" alt="Girl Cup" class="w-full h-36 object-cover bg-slate-800 transition duration-500 group-hover:scale-105">
+                                <img src="image/girlcup.jpg" alt="ห้องเกิร์ลคัพ" class="w-full h-36 object-cover bg-slate-800 transition duration-500 group-hover:scale-105">
                                 <div class="absolute inset-0 bg-gradient-to-t from-slate-955 to-transparent opacity-60"></div>
                             </div>
                             <label class="flex items-center justify-between p-4 cursor-pointer select-none">
                                 <div class="flex items-center space-x-3.5">
                                     <input type="checkbox" id="room-girlcup" onchange="calculatePrice()" class="w-5 h-5 text-indigo-600 bg-slate-800 border-slate-700 rounded focus:ring-indigo-500 focus:ring-offset-slate-900">
-                                    <span class="font-bold text-slate-300 group-hover:text-slate-100 transition">3. Girl Cup</span>
+                                    <span class="font-bold text-slate-300 group-hover:text-slate-100 transition">3. ห้องเกิร์ลคัพ</span>
                                 </div>
                                 <span class="font-extrabold text-indigo-400 group-hover:text-indigo-300 text-lg">50 ฿</span>
                             </label>
@@ -204,7 +204,7 @@
                             <i class="fa-solid fa-circle-check"></i>
                         </div>
                         <h2 class="text-xl font-black text-slate-100 tracking-wide">ชำระเงินเสร็จสิ้น!</h2>
-                        <p class="text-xs text-slate-400 mt-1">วสแกนเข้าห้องและวางที่คัดลอกต่อท้ายชื่อได้เลยค่ะ</p>
+                        <p class="text-xs text-slate-400 mt-1">คัดลอกชื่อด้านล่างและสแกนเข้าห้องได้เลย</p>
                     </div>
 
                     <div id="tickets-container" class="space-y-6 max-h-[440px] overflow-y-auto pr-1"></div>
@@ -391,9 +391,9 @@
             container.innerHTML = ''; 
 
             const roomData = {
-                'Phuket': { qr: 'image/qr-room-phuket.jpg' },
-                'Chiang Mai': { qr: 'image/qr-room-chiangmai.jpg' },
-                'Girl Cup': { qr: 'image/qr-room-girlcup.jpg' }
+                'ภูเก็ต': { qr: 'image/qr-room-phuket.jpg' },
+                'เชียงใหม่': { qr: 'image/qr-room-chiangmai.jpg' },
+                'เกิร์ลคัพ': { qr: 'image/qr-room-girlcup.jpg' }
             };
 
             selectedRooms.forEach((roomName, index) => {
