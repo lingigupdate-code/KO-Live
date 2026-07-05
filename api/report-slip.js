@@ -23,60 +23,66 @@ export default async function handler(req, res) {
           fileName: file.originalFilename
         })
       });
-      const gasResult = await gasResponse.json(); // สมมติว่าคืนค่า { url: "..." }
+      const gasResult = await gasResponse.json(); 
+      const fileUrl = gasResult.url || "-"; // 🌟 ดึงลิงก์รูปภาพที่ได้มาจาก GAS
 
-      // 2. เตรียมข้อมูลสำหรับ Google Sheets API
-  const auth = new google.auth.GoogleAuth({
-    credentials: JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON),
-    scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-  });
-  const sheets = google.sheets({ version: 'v4', auth });
+      // --- ส่วนที่ 2: เตรียมข้อมูลสำหรับ Google Sheets API ---
+      const auth = new google.auth.GoogleAuth({
+        credentials: JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON),
+        scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+      });
+      const sheets = google.sheets({ version: 'v4', auth });
 
-  // ดึงรายชื่อห้องที่ส่งมา เช่น "ภูเก็ต, เชียงใหม่, เกิร์ลคัพ" มาหั่นแยกเป็นอาเรย์
-  const roomsString = fields.rooms[0]; 
-  const roomsArray = roomsString.split(',').map(r => r.trim()); // ผลลัพธ์: ['ภูเก็ต', 'เชียงใหม่', 'เกิร์ลคัพ']
+      // ดึงรายชื่อห้องที่ส่งมา เช่น "ภูเก็ต, เชียงใหม่" มาแยกเป็นอาเรย์
+      const roomsString = fields.rooms[0]; 
+      const roomsArray = roomsString.split(',').map(r => r.trim()); 
 
-  // แปลงข้อมูลให้อยู่ในรูปแบบหลายแถว (Multi-rows) เพื่อบันทึกลง Sheet แยกกัน
-  const valuesToAppend = roomsArray.map(room => [
-    new Date().toLocaleString('th-TH'), 
-    fields.xUsername[0], 
-    room,              // แยกชื่อห้องเดี่ยวๆ ลงคอลัมน์ C ตรงนี้แล้ว!
-    fields.price[0],   // ยอดเงินรวม
-    "-",               // คอลัมน์ E (เว้นว่างไว้ชั่วคราว)
-    ""                 // คอลัมน์ F (เว้นไว้ให้สูตรใน Sheet คำนวณเอง)
-  ]);
+      // แปลงข้อมูลให้อยู่ในรูปแบบหลายแถว
+      const valuesToAppend = roomsArray.map(room => [
+        new Date().toLocaleString('th-TH'), 
+        fields.xUsername[0], 
+        room,              
+        fields.price[0],   
+        fileUrl,           // 🌟 เปลี่ยนจาก "-" เป็นตัวแปรลิงก์รูปภาพจริงแล้ว
+        ""                 
+      ]);
 
-  // สั่งบันทึกข้อมูลทุกห้องลง Sheet พร้อมกัน (จะเพิ่มแถวตามจำนวนห้องที่ซื้อจริง)
-  const appendResult = await sheets.spreadsheets.values.append({
-    spreadsheetId: '1YSkEk2G9IyKQu0wELH1CjW6gtw83zBMyvC9_guJG4RA',
-    range: 'Data!A:E',
-    valueInputOption: 'USER_ENTERED',
-    requestBody: {
-      values: valuesToAppend
+      // สั่งบันทึกข้อมูลทุกห้องลง Sheet พร้อมกัน (เปลี่ยน range เป็น A:F ให้ครอบคลุมคอลัมน์สูตร)
+      const appendResult = await sheets.spreadsheets.values.append({
+        spreadsheetId: '1YSkEk2G9IyKQu0wELH1CjW6gtw83zBMyvC9_guJG4RA',
+        range: 'Data!A:F', 
+        valueInputOption: 'USER_ENTERED',
+        requestBody: {
+          values: valuesToAppend
+        }
+      });
+
+      // --- 🌟 แก้ไขจุดบั๊ก: แยกชื่อแท็บกับพิกัดออกจากกันแบบปลอดภัยด้วยเครื่องหมาย ! ---
+      const updatedRange = appendResult.data.updates.updatedRange; 
+      const [sheetPart, rangePart] = updatedRange.split('!');
+      const rows = rangePart.match(/\d+/g); // ดึงเฉพาะตัวเลขแถวออกมา เช่น ['3', '5']
+      const rangeForNames = `${sheetPart}!F${rows[0]}:F${rows[1] || rows[0]}`; // เจนพิกัดคอลัมน์ F โดยชื่อแท็บ Data ไม่พัง
+
+      // วิ่งไปอ่านค่าชื่อที่สูตรคอลัมน์ F เจนออกมา
+      const namesResponse = await sheets.spreadsheets.values.get({
+        spreadsheetId: '1YSkEk2G9IyKQu0wELH1CjW6gtw83zBMyvC9_guJG4RA',
+        range: rangeForNames,
+      });
+
+      const fetchedNames = namesResponse.data.values; 
+      
+      // ยุบรวมชื่อกลับเป็น Object เพื่อส่งกลับไปให้หน้าบ้านใช้งาน
+      const generatedNames = {};
+      roomsArray.forEach((room, index) => {
+        generatedNames[room] = fetchedNames && fetchedNames[index] ? fetchedNames[index][0] : `${room}-1`;
+      });
+
+      // ส่งผลลัพธ์กลับไปให้หน้าบ้านใช้
+      res.status(200).json({ status: "success", generatedNames: generatedNames });
+
+    } catch (error) {
+      console.error("Backend Error:", error);
+      res.status(500).json({ error: error.message });
     }
   });
-
-  // --- 🌟 ทีเด็ด: ดึงชื่อที่สูตรใน Sheet (คอลัมน์ F) เพิ่งคำนวณเสร็จกลับมาแสดงบนเว็บ ---
-  const updatedRange = appendResult.data.updates.updatedRange; // เช่น "Data!A3:E5"
-  // เปลี่ยนพิกัดช่วงเพื่อวิ่งไปอ่านที่ คอลัมน์ F ของแถวนั้นๆ
-  const rangeForNames = updatedRange.replace(/A/g, 'F').replace(/E/g, 'F'); 
-
-  const namesResponse = await sheets.spreadsheets.values.get({
-    spreadsheetId: '1YSkEk2G9IyKQu0wELH1CjW6gtw83zBMyvC9_guJG4RA',
-    range: rangeForNames,
-  });
-
-  const fetchedNames = namesResponse.data.values; // จะได้ค่า [['ภูเก็ต-1'], ['เชียงใหม่-1']]
-  
-  // ยุบรวมชื่อกลับเป็น Object เพื่อส่งกลับไปให้หน้าบ้าน render ปุ่มคัดลอก
-  const generatedNames = {};
-  roomsArray.forEach((room, index) => {
-    generatedNames[room] = fetchedNames && fetchedNames[index] ? fetchedNames[index][0] : `${room}-1`;
-  });
-
-  // ส่งผลลัพธ์กลับไปให้หน้าบ้านใช้
-  res.status(200).json({ status: "success", generatedNames: generatedNames });
-
-} catch (error) {
-  res.status(500).json({ error: error.message });
 }
