@@ -1,5 +1,6 @@
 const { IncomingForm } = require('formidable');
 const fs = require('fs');
+const { google } = require('googleapis'); // เพิ่มส่วนนี้
 
 export const config = { api: { bodyParser: false } };
 
@@ -9,28 +10,38 @@ export default async function handler(req, res) {
   form.parse(req, async (err, fields, files) => {
     if (err) return res.status(500).json({ error: err.message });
 
-    const file = files.slip[0]; // ดึงไฟล์ตัวแรก
+    const file = files.slip[0];
     const base64File = fs.readFileSync(file.filepath).toString('base64');
-
+    
+    // --- ส่วนของ Google Sheets API ---
     try {
-      const response = await fetch('https://script.google.com/macros/s/AKfycbyt-_7TfMe1PnLmqp3MV3G30JoXQzTz2LuvfJ8vXeK3019JwEXuJRqFEMzwJLSW0LY/exec', {
-        method: 'POST',
-        body: JSON.stringify({
-          fileData: base64File,
-          mimeType: file.mimetype,
-          fileName: file.originalFilename,
-          xUsername: fields.xUsername[0],
-          rooms: fields.rooms[0],
-          price: fields.price[0]
-        })
+      // โหลด Credential จาก Environment Variable
+      const auth = new google.auth.GoogleAuth({
+        credentials: JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON),
+        scopes: ['https://www.googleapis.com/auth/spreadsheets'],
       });
 
-      // อ่านผลลัพธ์เป็น text ก่อน เพื่อดูว่าได้อะไรกลับมา
-      const text = await response.text();
-      console.log("Response จาก GAS:", text); 
+      const sheets = google.sheets({ version: 'v4', auth });
+      
+      // บันทึกลง Sheet
+      await sheets.spreadsheets.values.append({
+        spreadsheetId: '1YSkEk2G9IyKQu0wELH1CjW6gtw83zBMyvC9_guJG4RA',
+        range: 'Data!A:E', // ระบุแท็บ Data และช่วงคอลัมน์
+        valueInputOption: 'USER_ENTERED',
+        requestBody: {
+          values: [[
+            new Date().toLocaleString('th-TH'), 
+            fields.xUsername[0], 
+            fields.rooms[0], 
+            fields.price[0], 
+            "บันทึกผ่าน API"
+          ]]
+        }
+      });
 
-      res.status(200).json({ status: "done", raw: text });
+      res.status(200).json({ status: "success", message: "บันทึกข้อมูลเรียบร้อย" });
     } catch (error) {
+      console.error("API Error:", error);
       res.status(500).json({ error: error.message });
     }
   });
