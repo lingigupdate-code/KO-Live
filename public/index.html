@@ -6,13 +6,61 @@
     <title>KO Live - Stream Room Booking</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* ซ่อน Counter ในหน้าจอมือถือ, แสดงเฉพาะหน้าจอคอมพิวเตอร์/แท็บเล็ต */
+        @media (max-width: 1024px) {
+            .desktop-counter { display: none !important; }
+        }
+    </style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen flex items-center justify-center p-0 sm:p-4">
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen flex items-center justify-center p-0 sm:p-4 gap-8">
 
-    <!-- Container หลักสไตล์แอปมือถือหรูหรา -->
+    <div class="desktop-counter w-80 bg-slate-900 min-h-[600px] rounded-3xl shadow-[0_0_30px_rgba(16,185,129,0.1)] border border-slate-800 flex flex-col overflow-hidden relative p-6">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl"></div>
+        
+        <h2 class="text-xl font-black text-slate-200 flex items-center mb-6">
+            <i class="fa-solid fa-chart-pie text-emerald-400 mr-2"></i> Live Status
+        </h2>
+        
+        <p class="text-xs text-slate-400 mb-4">จำนวนลูกค้าที่เข้าร่วมห้องสตรีม</p>
+
+        <div class="space-y-4 flex-1">
+            <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 flex justify-between items-center relative overflow-hidden">
+                <div class="absolute left-0 top-0 bottom-0 w-1 bg-indigo-500"></div>
+                <div>
+                    <h3 class="text-slate-300 font-bold text-sm">ห้องภูเก็ต</h3>
+                    <p class="text-[10px] text-slate-500">Active Members</p>
+                </div>
+                <div class="text-2xl font-black text-indigo-400" id="count-ภูเก็ต">-</div>
+            </div>
+
+            <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 flex justify-between items-center relative overflow-hidden">
+                <div class="absolute left-0 top-0 bottom-0 w-1 bg-pink-500"></div>
+                <div>
+                    <h3 class="text-slate-300 font-bold text-sm">ห้องเชียงใหม่</h3>
+                    <p class="text-[10px] text-slate-500">Active Members</p>
+                </div>
+                <div class="text-2xl font-black text-pink-400" id="count-เชียงใหม่">-</div>
+            </div>
+
+            <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 flex justify-between items-center relative overflow-hidden">
+                <div class="absolute left-0 top-0 bottom-0 w-1 bg-purple-500"></div>
+                <div>
+                    <h3 class="text-slate-300 font-bold text-sm">ห้องเกิร์ลคัพ</h3>
+                    <p class="text-[10px] text-slate-500">Active Members</p>
+                </div>
+                <div class="text-2xl font-black text-purple-400" id="count-เกิร์ลคัพ">-</div>
+            </div>
+        </div>
+
+        <div class="mt-6 text-center border-t border-slate-800 pt-4">
+            <p class="text-[10px] text-slate-500"><i class="fa-solid fa-rotate animate-spin mr-1"></i> อัปเดตข้อมูลอัตโนมัติ</p>
+        </div>
+    </div>
+
+
     <div class="w-full max-w-md bg-slate-900 min-h-screen sm:min-h-[850px] sm:rounded-3xl shadow-[0_0_50px_rgba(99,102,241,0.15)] border border-slate-800 flex flex-col justify-between overflow-hidden relative">
         
-        <!-- Header แบนเนอร์ KO Live -->
         <header class="relative h-52 bg-slate-950 flex items-center justify-center overflow-hidden border-b border-slate-800">
             <img src="image/kolive.jpg" alt="KO Live Banner" class="absolute inset-0 w-full h-full object-cover opacity-40 scale-105 transform transition duration-700 hover:scale-100">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-black/50"></div>
@@ -24,17 +72,14 @@
                 <h1 class="font-black text-2xl tracking-wider bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent drop-shadow">KO LIVE STREAMING</h1>
                 <p class="text-xs text-slate-400 mt-0.5 uppercase tracking-widest font-semibold opacity-80">24/7 Automated Booking System</p>
                 
-                <!-- ปุ่มติดต่อแอดมินตรง Header -->
                 <a href="https://x.com/4peppermintka" target="_blank" class="inline-flex items-center text-[11px] bg-slate-900/90 hover:bg-slate-800 text-slate-300 border border-slate-700/60 rounded-full px-3 py-1 mt-3 transition shadow-sm group">
                     <i class="fa-brands fa-x-twitter mr-1.5 text-indigo-400 group-hover:scale-115 transition"></i> Contact Admin: <span class="text-indigo-300 font-bold ml-1">@4peppermintka</span>
                 </a>
             </div>
         </header>
 
-        <!-- Main Content -->
         <main class="p-6 flex-1 flex flex-col justify-between">
             
-            <!-- STEP 1: เลือกห้อง -->
             <div id="step-selection" class="space-y-6 flex-1 flex flex-col justify-between">
                 <div class="space-y-4">
                     <div class="bg-gradient-to-r from-indigo-950 to-slate-900 border border-indigo-500/30 rounded-2xl p-3.5 text-sm text-indigo-300 flex items-center shadow-[inset_0_1px_2px_rgba(255,255,255,0.05)]">
@@ -49,7 +94,6 @@
                     </h2>
                     
                     <div class="space-y-4">
-                        <!-- 1. ห้องภูเก็ต -->
                         <div class="group border border-slate-800 rounded-2xl overflow-hidden shadow-lg bg-slate-950/50 transition-all duration-300 hover:border-indigo-500/50 hover:shadow-[0_0_20px_rgba(99,102,241,0.05)]">
                             <div class="relative overflow-hidden">
                                 <img src="image/phuket.jpg" alt="ห้องภูเก็ต" class="w-full h-36 object-cover bg-slate-800 transition duration-500 group-hover:scale-105">
@@ -64,7 +108,6 @@
                             </label>
                         </div>
 
-                        <!-- 2. ห้องเชียงใหม่ -->
                         <div class="group border border-slate-800 rounded-2xl overflow-hidden shadow-lg bg-slate-950/50 transition-all duration-300 hover:border-indigo-500/50 hover:shadow-[0_0_20px_rgba(99,102,241,0.05)]">
                             <div class="relative overflow-hidden">
                                 <img src="image/chiangmai.jpg" alt="ห้องเชียงใหม่" class="w-full h-36 object-cover bg-slate-800 transition duration-500 group-hover:scale-105">
@@ -79,7 +122,6 @@
                             </label>
                         </div>
 
-                        <!-- 3. ห้องเกิร์ลคัพ -->
                         <div class="group border border-slate-800 rounded-2xl overflow-hidden shadow-lg bg-slate-950/50 transition-all duration-300 hover:border-indigo-500/50 hover:shadow-[0_0_20px_rgba(99,102,241,0.05)]">
                             <div class="relative overflow-hidden">
                                 <img src="image/girlcup.jpg" alt="ห้องเกิร์ลคัพ" class="w-full h-36 object-cover bg-slate-800 transition duration-500 group-hover:scale-105">
@@ -115,7 +157,6 @@
                 </div>
             </div>
 
-            <!-- STEP 2: หน้าชำระเงิน -->
             <div id="step-payment" class="hidden text-center space-y-6 flex-1 flex flex-col justify-between">
                 <div>
                     <button onclick="goBackToSelection()" class="text-xs text-slate-400 hover:text-indigo-400 font-bold flex items-center mb-6 bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 transition">
@@ -156,7 +197,6 @@
                 </button>
             </div>
 
-            <!-- STEP 3: หน้าตั๋วเข้าห้อง -->
             <div id="step-tickets" class="hidden space-y-6 flex-1 flex flex-col justify-between">
                 <div class="space-y-6">
                     <div class="text-center">
@@ -164,14 +204,12 @@
                             <i class="fa-solid fa-circle-check"></i>
                         </div>
                         <h2 class="text-xl font-black text-slate-100 tracking-wide">ชำระเงินเสร็จสิ้น!</h2>
-                        <p class="text-xs text-slate-400 mt-1">สแกน QR Code ด้านล่างเพื่อเข้าสู่ห้องสตรีมของคุณได้ทันที</p>
+                        <p class="text-xs text-slate-400 mt-1">คัดลอกชื่อด้านล่างและสแกนเข้าห้องได้เลย</p>
                     </div>
 
-                    <!-- พื้นที่แสดงการ์ดตั๋วที่จอง -->
                     <div id="tickets-container" class="space-y-6 max-h-[440px] overflow-y-auto pr-1"></div>
                 </div>
 
-                <!-- ท้ายเครดิตหน้าตั๋ว เพิ่มช่องทางติดต่อ X เผื่อลูกค้าเจอปัญหา -->
                 <div class="text-center space-y-4">
                     <p class="text-[11px] text-slate-500">
                         พบปัญหาในการเข้าห้องสตรีม? ติดต่อแอดมินทาง X 
@@ -185,10 +223,36 @@
         </main>
     </div>
 
-    <!-- JavaScript สำหรับควบคุมระบบ -->
     <script>
         let selectedRooms = [];
         let finalPrice = 0;
+        let generatedNames = {}; // 🌟 เพิ่มตัวแปรเพื่อเก็บชื่อคิวที่รับมาจากหลังบ้าน
+
+        // ==========================================
+        // ฟังก์ชันดึงยอดสรุป (Fetch Summary) สำหรับฝั่งซ้าย
+        // ==========================================
+        async function fetchSummary() {
+            try {
+                // ยิง API ไปดึงข้อมูลจาก Google Sheets (ถ้าคุณเตรียม api/get-summary.js ไว้แล้ว)
+                const res = await fetch('/api/get-summary'); 
+                const data = await res.json();
+                
+                // นำตัวเลขมาใส่ในหน้าเว็บ (สมมติว่า data ส่งกลับมาเป็น array [["ภูเก็ต", 5], ["เชียงใหม่", 2]])
+                if(data && Array.isArray(data)) {
+                    data.forEach(row => {
+                        const roomName = row[0];
+                        const count = row[1];
+                        const countElement = document.getElementById(`count-${roomName}`);
+                        if(countElement) countElement.innerText = count;
+                    });
+                }
+            } catch (err) {
+                console.log("ยังไม่ได้เชื่อมต่อ API สรุปยอด หรือข้อมูลยังไม่พร้อม");
+            }
+        }
+        
+        // รันอัปเดตสถิติทันทีที่โหลดหน้าเว็บ
+        fetchSummary();
 
         function calculatePrice() {
             selectedRooms = [];
@@ -245,94 +309,128 @@
         }
 
         async function processSlip() {
-    const xUsername = document.getElementById('x-username').value.trim();
-    const fileInput = document.getElementById('slip-file');
-    const file = fileInput.files[0];
-    if (!file) return;
+            const xUsername = document.getElementById('x-username').value.trim();
+            const fileInput = document.getElementById('slip-file');
+            const file = fileInput.files[0];
+            if (!file) return;
 
-    const btnSubmit = document.getElementById('btn-submit-slip');
-    btnSubmit.disabled = true;
-    btnSubmit.innerText = "กำลังตรวจสอบสลิป...";
+            const btnSubmit = document.getElementById('btn-submit-slip');
+            btnSubmit.disabled = true;
+            btnSubmit.innerText = "กำลังตรวจสอบสลิป...";
 
-    const formData = new FormData();
-    formData.append('rooms', selectedRooms.join(', '));
-    formData.append('price', finalPrice);
-    formData.append('xUsername', xUsername);
-    formData.append('slip', file);
+            const formData = new FormData();
+            formData.append('rooms', selectedRooms.join(', '));
+            formData.append('price', finalPrice);
+            formData.append('xUsername', xUsername);
+            formData.append('slip', file);
 
-    try {
-        // ยิงข้อมูลไปที่หลังบ้านแบบ Serverless ของ Vercel
-        const response = await fetch('/api/report-slip', {
-            method: 'POST',
-            body: formData
-        });
+            try {
+                // ยิงข้อมูลไปที่หลังบ้านแบบ Serverless ของ Vercel
+                const response = await fetch('/api/report-slip', {
+                    method: 'POST',
+                    body: formData
+                });
 
-        // แปลงผลลัพธ์เป็น JSON เพื่ออ่านข้อความ Error จริงจากหลังบ้าน
-        const result = await response.json().catch(() => ({}));
+                // แปลงผลลัพธ์เป็น JSON 
+                const result = await response.json().catch(() => ({}));
 
-        // ถ้าสถานะอยู่ในช่วง 200-299 แปลว่าผ่านฉลุย
-        if (response.status >= 200 && response.status < 300) {
-            console.log('บันทึกข้อมูลลง Google Sheet และ Drive สำเร็จ');
-            
-            // เปลี่ยนหน้าไปแสดงตั๋ว
-            document.getElementById('step-payment').classList.add('hidden');
-            document.getElementById('step-tickets').classList.remove('hidden');
-            renderTickets();
-        } else {
-            // 🔴 แสดงข้อความเออร์เรอร์จริงที่พ่นมาจากโค้ดหลังบ้านบน Vercel
-            alert(`หลังบ้านแจ้งเตือน: ${result.message || 'ระบบขัดข้องชั่วคราว'} (Status: ${response.status})`);
-            btnSubmit.disabled = false;
-            btnSubmit.innerText = "ยืนยันและส่งหลักฐานการโอน";
+                // ถ้าสถานะอยู่ในช่วง 200-299 แปลว่าผ่านฉลุย
+                if (response.status >= 200 && response.status < 300) {
+                    console.log('บันทึกข้อมูลสำเร็จ');
+                    
+                    // 🌟 รับค่าชื่อคิวที่หลังบ้านส่งกลับมา
+                    generatedNames = result.generatedNames || {};
+                    
+                    // เปลี่ยนหน้าไปแสดงตั๋ว
+                    document.getElementById('step-payment').classList.add('hidden');
+                    document.getElementById('step-tickets').classList.remove('hidden');
+                    
+                    renderTickets(); // 🌟 วาดหน้าตั๋วแบบใหม่
+                    fetchSummary();  // 🌟 อัปเดตสถิติตัวเลขฝั่งซ้ายใหม่ทันที
+                } else {
+                    alert(`หลังบ้านแจ้งเตือน: ${result.message || 'ระบบขัดข้องชั่วคราว'} (Status: ${response.status})`);
+                    btnSubmit.disabled = false;
+                    btnSubmit.innerText = "ยืนยันและส่งหลักฐานการโอน";
+                }
+            } catch (error) {
+                console.error('Network Error:', error);
+                alert('ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้ กรุณาตรวจสอบอินเทอร์เน็ตของคุณ');
+                btnSubmit.disabled = false;
+                btnSubmit.innerText = "ยืนยันและส่งหลักฐานการโอน";
+            }
         }
-    } catch (error) {
-        // กรณีเน็ตหลุด หรือ Timeout จริงๆ
-        console.error('Network Error:', error);
-        alert('ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้ กรุณาตรวจสอบอินเทอร์เน็ตของคุณ');
-        btnSubmit.disabled = false;
-        btnSubmit.innerText = "ยืนยันและส่งหลักฐานการโอน";
-    }
-}
 
-      
+        // ==========================================
+        // 🌟 ฟังก์ชัน Copy ข้อความ (คัดลอกชื่อ)
+        // ==========================================
+        function copyText(id) {
+            const textToCopy = document.getElementById(id).innerText;
+            navigator.clipboard.writeText(textToCopy);
+            
+            const btn = document.getElementById('btn-' + id);
+            const originalHTML = btn.innerHTML;
+            
+            // เปลี่ยนหน้าตาปุ่มเพื่อแจ้งเตือนว่าคัดลอกสำเร็จแล้ว
+            btn.innerHTML = `<i class="fa-solid fa-check mr-1"></i> คัดลอกแล้ว`;
+            btn.classList.add('bg-emerald-600', 'text-white');
+            btn.classList.remove('bg-indigo-600/20', 'text-indigo-400');
+            
+            // ให้กลับเป็นปุ่มเดิมหลังผ่านไป 2 วินาที
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+                btn.classList.remove('bg-emerald-600', 'text-white');
+                btn.classList.add('bg-indigo-600/20', 'text-indigo-400');
+            }, 2000);
+        }
 
+        // ==========================================
+        // 🌟 ฟังก์ชันแสดงตั๋วแบบใหม่ (มีปุ่ม Copy)
+        // ==========================================
         function renderTickets() {
             const container = document.getElementById('tickets-container');
             container.innerHTML = ''; 
 
             const roomData = {
-                'ภูเก็ต': { qr: 'image/qr-room-phuket.jpg', url: 'https://kolive.com/room/phuket' },
-                'เชียงใหม่': { qr: 'image/qr-room-chiangmai.jpg', url: 'https://kolive.com/room/chiangmai' },
-                'เกิร์ลคัพ': { qr: 'image/qr-room-girlcup.jpg', url: 'https://kolive.com/room/girlcup' }
+                'ภูเก็ต': { qr: 'image/qr-room-phuket.jpg' },
+                'เชียงใหม่': { qr: 'image/qr-room-chiangmai.jpg' },
+                'เกิร์ลคัพ': { qr: 'image/qr-room-girlcup.jpg' }
             };
 
-            selectedRooms.forEach(roomName => {
+            selectedRooms.forEach((roomName, index) => {
                 const data = roomData[roomName];
+                
+                // ดึงชื่อคิวจาก Object ที่ได้มาจากหลังบ้าน (ถ้าไม่มา จะใช้ชื่อห้อง-1 สำรองไว้)
+                const copyName = generatedNames[roomName] || `${roomName}-1`;
+                const elementId = `copyname-${index}`;
 
                 container.insertAdjacentHTML('beforeend', `
-                    <div class="bg-slate-950 border border-slate-800 rounded-2xl p-6 shadow-2xl flex flex-col items-center text-center relative overflow-hidden group hover:border-indigo-500/30 transition">
-                        <div class="absolute -top-10 -left-10 w-24 h-24 bg-purple-500/5 rounded-full blur-xl"></div>
-                        <div class="absolute -bottom-10 -right-10 w-24 h-24 bg-indigo-500/5 rounded-full blur-xl"></div>
-                        
-                        <div class="w-full flex justify-between items-center border-b border-slate-800/80 pb-3 mb-4">
-                            <span class="bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-extrabold px-2.5 py-0.5 rounded-md uppercase tracking-wider">KO LIVE PASS</span>
-                            <span class="text-[10px] text-slate-500 font-mono font-bold">#TKT-${Math.floor(100000 + Math.random() * 900000)}</span>
+                    <div class="bg-slate-950 border border-slate-800 rounded-2xl p-5 shadow-xl transition transform hover:-translate-y-1 hover:border-indigo-500/30">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-black text-slate-200">ห้อง${roomName}</h3>
+                            <span class="text-[10px] text-slate-500 font-mono">#TKT-${Math.floor(100000 + Math.random() * 900000)}</span>
                         </div>
                         
-                        <h3 class="text-xl font-black text-slate-200 tracking-wide mb-1">ห้อง${roomName}</h3>
-                        <p class="text-xs text-slate-400 mb-5">สแกนบาร์โค้ดด้านล่างหรือกดปุ่มเพื่อเข้าห้อง</p>
-                        
-                        <div class="p-3 border-2 border-slate-800 bg-white rounded-2xl w-44 h-44 flex items-center justify-center overflow-hidden shadow-[0_0_25px_rgba(255,255,255,0.02)] transition transform group-hover:scale-102">
-                            <img src="${data.qr}" alt="QR เข้าห้อง ${roomName}" class="w-full h-full object-contain">
+                        <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 mb-5 flex justify-between items-center">
+                            <div>
+                                <p class="text-[10px] text-slate-500 mb-0.5">ชื่อที่ต้องตั้ง (ห้ามเปลี่ยน)</p>
+                                <p id="${elementId}" class="font-bold text-emerald-400 text-lg tracking-wider">${copyName}</p>
+                            </div>
+                            <button id="btn-${elementId}" onclick="copyText('${elementId}')" class="bg-indigo-600/20 text-indigo-400 hover:bg-indigo-600 hover:text-white px-3 py-2 rounded-lg text-xs font-bold transition shadow-sm">
+                                <i class="fa-regular fa-copy mr-1"></i> คัดลอก
+                            </button>
                         </div>
                         
-                        <div class="w-full border-t-2 border-dashed border-slate-800/80 my-5 relative">
-                            <div class="absolute -left-8 -top-2 w-4 h-4 bg-slate-900 border-r border-slate-800 rounded-full"></div>
-                            <div class="absolute -right-8 -top-2 w-4 h-4 bg-slate-900 border-l border-slate-800 rounded-full"></div>
+                        <div class="flex gap-4 items-center bg-slate-900/50 rounded-xl p-3 border border-slate-800">
+                            <img src="${data.qr}" alt="QR" class="w-20 h-20 rounded-lg border border-slate-700 bg-white p-1 shadow-inner">
+                            <div class="text-left flex-1">
+                                <p class="text-xs text-slate-300 font-bold mb-1">ขั้นตอนเข้าห้อง:</p>
+                                <ol class="text-[10px] text-slate-400 list-decimal ml-3 space-y-1">
+                                    <li>กด <strong>"คัดลอก"</strong> ชื่อด้านบน</li>
+                                    <li>สแกน <strong>QR Code</strong> นี้</li>
+                                    <li><strong>วาง (Paste)</strong> ชื่อที่คัดลอกมาตอนเข้าห้อง</li>
+                                </ol>
+                            </div>
                         </div>
-                        
-                        <a href="${data.url}" target="_blank" class="w-full flex items-center justify-center text-sm bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2.5 px-4 rounded-xl transition-all duration-300 shadow-md">
-                            เข้าสู่ห้องสตรีมทันที <i class="fa-solid fa-arrow-up-right-from-square ml-2 text-xs"></i>
-                        </a>
                     </div>
                 `);
             });
