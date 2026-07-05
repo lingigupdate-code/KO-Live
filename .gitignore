@@ -1,0 +1,8 @@
+# Block Node.js dependencies (เพราะบน GitHub จะสั่งดาวน์โหลดใหม่เองผ่าน package.json)
+node_modules/
+
+# Block Google Cloud Secret Key
+google-credentials.json
+
+# Block local environment variables
+.env
