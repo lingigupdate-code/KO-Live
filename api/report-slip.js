@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     const file = Array.isArray(files.slip) ? files.slip[0] : files.slip;
     const base64File = fs.readFileSync(file.filepath).toString('base64');
 
-    const response = await fetch('https://script.google.com/macros/s/AKfycbzn2TOg3fu3ng81M76lAIgMpWoJNIQ_Yl7CCXRCsccFe92e9FaMht33-T41sG84V0v6/exec', {
+    const response = await fetch('https://script.google.com/macros/s/AKfycbwkKCKbSjRqnNIE5TpvFQK66DNS87VLmQj7JgfbnXaOpDlG1CLbdjb2z7BOCgXzooxM/exec', {
       method: 'POST',
       body: JSON.stringify({
         fileData: base64File,
