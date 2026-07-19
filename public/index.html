@@ -226,22 +226,16 @@
         fetchSummary();
 
         function calculatePrice() {
-            selectedRooms = [];
+                selectedRooms = [];
+            // เอาบรรทัดที่เช็คห้องภูเก็ตออก
             if (document.getElementById('room-chiangmai').checked) selectedRooms.push('เชียงใหม่');
             if (document.getElementById('room-girlcup').checked) selectedRooms.push('เกิร์ลคัพ');
 
             const count = selectedRooms.length;
-            const discountNote = document.getElementById('discount-note');
             const btnToPay = document.getElementById('btn-to-pay');
-
-            if (count === 3) {
-                finalPrice = 120;
-                discountNote.classList.remove('hidden');
-            } else {
-                finalPrice = count * 50;
-                discountNote.classList.add('hidden');
-            }
-
+    
+            // ปรับราคาเป็น 50 บาทต่อห้อง (ไม่มีโปรลดราคา 120 บาทแล้ว)
+            finalPrice = count * 50;
             document.getElementById('total-price').innerText = finalPrice + " ฿";
 
             if (count > 0) {
@@ -249,9 +243,10 @@
                 btnToPay.className = "w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold py-3.5 px-4 rounded-2xl mt-5 cursor-pointer shadow-[0_4px_20px_rgba(99,102,241,0.4)] transition hover:brightness-110 active:scale-[0.99]";
             } else {
                 btnToPay.disabled = true;
-                btnToPay.className = "w-full bg-slate-800 text-slate-500 font-bold py-3.5 px-4 rounded-2xl mt-5 cursor-not-allowed border border-slate-700/50";
+            btnToPay.className = "w-full bg-slate-800 text-slate-500 font-bold py-3.5 px-4 rounded-2xl mt-5 cursor-not-allowed border border-slate-700/50";
             }
         }
+
 
         function goToPayment() {
             document.getElementById('step-selection').classList.add('hidden');
@@ -361,7 +356,6 @@
             container.innerHTML = ''; 
 
             const roomData = {
-                'ภูเก็ต': { qr: 'image/qr-room-phuket.jpg' },
                 'เชียงใหม่': { qr: 'image/qr-room-chiangmai.jpg' },
                 'เกิร์ลคัพ': { qr: 'image/qr-room-girlcup.jpg' }
             };
