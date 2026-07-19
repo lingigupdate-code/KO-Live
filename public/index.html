@@ -152,13 +152,17 @@
                                 <i class="fa-solid fa-cloud-arrow-up mr-1.5 text-indigo-400 text-sm"></i> อัปโหลดภาพสลิปธนาคาร
                             </label>
                             
-                            <div class="relative group cursor-pointer border border-dashed border-slate-800 hover:border-indigo-500/50 bg-slate-900/50 rounded-xl p-3 transition text-center">
-                                <input type="file" id="slip-file" accept="image/*" onchange="validatePaymentForm()" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" onchange="previewSlip(event)">
-                                <div class="text-slate-400 text-xs py-1">
-                                    <i class="fa-solid fa-image text-slate-500 text-lg mb-1 block group-hover:text-indigo-400 transition"></i>
-                                    <span class="font-medium text-slate-400 group-hover:text-slate-300">กดเลือกไฟล์หรือถ่ายรูปสลิป</span>
-                                </div>
+                            <!-- แก้ไขตรงนี้ในส่วน Step Payment -->
+                        <div class="relative group cursor-pointer border border-dashed border-slate-800 hover:border-indigo-500/50 bg-slate-900/50 rounded-xl p-3 transition text-center">
+                            <!-- เพิ่ม onchange="previewSlip(event)" เข้าไป -->
+                            <input type="file" id="slip-file" accept="image/*" onchange="validatePaymentForm(); previewSlip(event);" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+    
+                            <!-- เพิ่ม id="slip-preview" ไว้ตรงนี้เพื่อให้ JS เอาภาพมาวาง -->
+                            <div id="slip-preview" class="text-slate-400 text-xs py-1">
+                            <i class="fa-solid fa-image text-slate-500 text-lg mb-1 block group-hover:text-indigo-400 transition"></i>
+                            <span class="font-medium text-slate-400 group-hover:text-slate-300">กดเลือกไฟล์หรือถ่ายรูปสลิป</span>
                             </div>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -273,6 +277,23 @@
             }
         }
 
+        function previewSlip(event) {
+            const file = event.target.files[0];
+            const previewContainer = document.getElementById('slip-preview');
+    
+            if (file) {
+            const reader = new FileReader();
+                reader.onload = function(e) {
+                // เปลี่ยนเนื้อหาใน div ให้แสดงรูปที่อัปโหลด
+                previewContainer.innerHTML = `
+                <img src="${e.target.result}" class="max-h-32 mx-auto rounded-lg shadow-lg border border-slate-700">
+                <p class="text-emerald-400 mt-2 font-bold text-xs">เลือกไฟล์แล้ว: ${file.name.substring(0, 15)}...</p>
+               `;
+            }
+                reader.readAsDataURL(file);
+                }
+            }
+        
         async function processSlip() {
             const xUsername = document.getElementById('x-username').value.trim();
             const fileInput = document.getElementById('slip-file');
