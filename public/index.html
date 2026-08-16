@@ -29,19 +29,19 @@
             <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 flex justify-between items-center relative overflow-hidden">
                 <div class="absolute left-0 top-0 bottom-0 w-1 bg-pink-500"></div>
                 <div>
-                    <h3 class="text-slate-300 font-bold text-sm">ห้องเชียงใหม่</h3>
+                    <h3 class="text-slate-300 font-bold text-sm">ห้อง Impact D1</h3>
                     <p class="text-[10px] text-slate-500">Active Members</p>
                 </div>
-                <div class="text-2xl font-black text-pink-400" id="count-เชียงใหม่">-</div>
+                <div class="text-2xl font-black text-pink-400" id="count-Impact-D1">-</div>
             </div>
 
             <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 flex justify-between items-center relative overflow-hidden">
                 <div class="absolute left-0 top-0 bottom-0 w-1 bg-purple-500"></div>
                 <div>
-                    <h3 class="text-slate-300 font-bold text-sm">ห้องเกิร์ลคัพ</h3>
+                    <h3 class="text-slate-300 font-bold text-sm">ห้อง Impact D2</h3>
                     <p class="text-[10px] text-slate-500">Active Members</p>
                 </div>
-                <div class="text-2xl font-black text-purple-400" id="count-เกิร์ลคัพ">-</div>
+                <div class="text-2xl font-black text-purple-400" id="count-Impact-D2">-</div>
             </div>
         </div>
 
@@ -83,13 +83,13 @@
 
                         <div class="group border border-slate-800 rounded-2xl overflow-hidden shadow-lg bg-slate-950/50 transition-all duration-300 hover:border-indigo-500/50 hover:shadow-[0_0_20px_rgba(99,102,241,0.05)]">
                             <div class="relative overflow-hidden">
-                                <img src="image/chiangmai.jpg" alt="ห้องเชียงใหม่" class="w-full h-36 object-cover bg-slate-800 transition duration-500 group-hover:scale-105">
+                                <img src="image/impact-d1.jpg" alt="ห้อง Impact D1" class="w-full h-36 object-cover bg-slate-800 transition duration-500 group-hover:scale-105">
                                 <div class="absolute inset-0 bg-gradient-to-t from-slate-955 to-transparent opacity-60"></div>
                             </div>
                             <label class="flex items-center justify-between p-4 cursor-pointer select-none">
                                 <div class="flex items-center space-x-3.5">
-                                    <input type="checkbox" id="room-chiangmai" onchange="calculatePrice()" class="w-5 h-5 text-indigo-600 bg-slate-800 border-slate-700 rounded focus:ring-indigo-500 focus:ring-offset-slate-900">
-                                    <span class="font-bold text-slate-300 group-hover:text-slate-100 transition">2. ห้องเชียงใหม่</span>
+                                    <input type="checkbox" id="room-Impact-D1" onchange="calculatePrice()" class="w-5 h-5 text-indigo-600 bg-slate-800 border-slate-700 rounded focus:ring-indigo-500 focus:ring-offset-slate-900">
+                                    <span class="font-bold text-slate-300 group-hover:text-slate-100 transition">1. ห้อง Impact D1</span>
                                 </div>
                                 <span class="font-extrabold text-indigo-400 group-hover:text-indigo-300 text-lg">50 ฿</span>
                             </label>
@@ -97,13 +97,13 @@
 
                         <div class="group border border-slate-800 rounded-2xl overflow-hidden shadow-lg bg-slate-950/50 transition-all duration-300 hover:border-indigo-500/50 hover:shadow-[0_0_20px_rgba(99,102,241,0.05)]">
                             <div class="relative overflow-hidden">
-                                <img src="image/girlcup.jpg" alt="ห้องเกิร์ลคัพ" class="w-full h-36 object-cover bg-slate-800 transition duration-500 group-hover:scale-105">
+                                <img src="image/impact-d2.jpg" alt="ห้อง Impact D2" class="w-full h-36 object-cover bg-slate-800 transition duration-500 group-hover:scale-105">
                                 <div class="absolute inset-0 bg-gradient-to-t from-slate-955 to-transparent opacity-60"></div>
                             </div>
                             <label class="flex items-center justify-between p-4 cursor-pointer select-none">
                                 <div class="flex items-center space-x-3.5">
-                                    <input type="checkbox" id="room-girlcup" onchange="calculatePrice()" class="w-5 h-5 text-indigo-600 bg-slate-800 border-slate-700 rounded focus:ring-indigo-500 focus:ring-offset-slate-900">
-                                    <span class="font-bold text-slate-300 group-hover:text-slate-100 transition">3. ห้องเกิร์ลคัพ</span>
+                                    <input type="checkbox" id="room-Impact-D2" onchange="calculatePrice()" class="w-5 h-5 text-indigo-600 bg-slate-800 border-slate-700 rounded focus:ring-indigo-500 focus:ring-offset-slate-900">
+                                    <span class="font-bold text-slate-300 group-hover:text-slate-100 transition">2. ห้อง Impact D2</span>
                                 </div>
                                 <span class="font-extrabold text-indigo-400 group-hover:text-indigo-300 text-lg">50 ฿</span>
                             </label>
@@ -152,15 +152,12 @@
                                 <i class="fa-solid fa-cloud-arrow-up mr-1.5 text-indigo-400 text-sm"></i> อัปโหลดภาพสลิปธนาคาร
                             </label>
                             
-                            <!-- แก้ไขตรงนี้ในส่วน Step Payment -->
                         <div class="relative group cursor-pointer border border-dashed border-slate-800 hover:border-indigo-500/50 bg-slate-900/50 rounded-xl p-3 transition text-center">
-                            <!-- เพิ่ม onchange="previewSlip(event)" เข้าไป -->
                             <input type="file" id="slip-file" accept="image/*" onchange="validatePaymentForm(); previewSlip(event);" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
     
-                            <!-- เพิ่ม id="slip-preview" ไว้ตรงนี้เพื่อให้ JS เอาภาพมาวาง -->
                             <div id="slip-preview" class="text-slate-400 text-xs py-1">
-                            <i class="fa-solid fa-image text-slate-500 text-lg mb-1 block group-hover:text-indigo-400 transition"></i>
-                            <span class="font-medium text-slate-400 group-hover:text-slate-300">กดเลือกไฟล์หรือถ่ายรูปสลิป</span>
+                                <i class="fa-solid fa-image text-slate-500 text-lg mb-1 block group-hover:text-indigo-400 transition"></i>
+                                <span class="font-medium text-slate-400 group-hover:text-slate-300">กดเลือกไฟล์หรือถ่ายรูปสลิป</span>
                             </div>
                         </div>
                         </div>
@@ -201,18 +198,13 @@
     <script>
         let selectedRooms = [];
         let finalPrice = 0;
-        let generatedNames = {}; // 🌟 เพิ่มตัวแปรเพื่อเก็บชื่อคิวที่รับมาจากหลังบ้าน
+        let generatedNames = {};
 
-        // ==========================================
-        // ฟังก์ชันดึงยอดสรุป (Fetch Summary) สำหรับฝั่งซ้าย
-        // ==========================================
         async function fetchSummary() {
             try {
-                // ยิง API ไปดึงข้อมูลจาก Google Sheets (ถ้าคุณเตรียม api/get-summary.js ไว้แล้ว)
                 const res = await fetch('/api/get-summary'); 
                 const data = await res.json();
                 
-                // นำตัวเลขมาใส่ในหน้าเว็บ (สมมติว่า data ส่งกลับมาเป็น array [["ภูเก็ต", 5], ["เชียงใหม่", 2]])
                 if(data && Array.isArray(data)) {
                     data.forEach(row => {
                         const roomName = row[0];
@@ -226,19 +218,16 @@
             }
         }
         
-        // รันอัปเดตสถิติทันทีที่โหลดหน้าเว็บ
         fetchSummary();
 
         function calculatePrice() {
-                selectedRooms = [];
-            // เอาบรรทัดที่เช็คห้องภูเก็ตออก
-            if (document.getElementById('room-chiangmai').checked) selectedRooms.push('เชียงใหม่');
-            if (document.getElementById('room-girlcup').checked) selectedRooms.push('เกิร์ลคัพ');
+            selectedRooms = [];
+            if (document.getElementById('room-Impact-D1').checked) selectedRooms.push('Impact D1');
+            if (document.getElementById('room-Impact-D2').checked) selectedRooms.push('Impact D2');
 
             const count = selectedRooms.length;
             const btnToPay = document.getElementById('btn-to-pay');
     
-            // ปรับราคาเป็น 50 บาทต่อห้อง (ไม่มีโปรลดราคา 120 บาทแล้ว)
             finalPrice = count * 50;
             document.getElementById('total-price').innerText = finalPrice + " ฿";
 
@@ -247,10 +236,9 @@
                 btnToPay.className = "w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold py-3.5 px-4 rounded-2xl mt-5 cursor-pointer shadow-[0_4px_20px_rgba(99,102,241,0.4)] transition hover:brightness-110 active:scale-[0.99]";
             } else {
                 btnToPay.disabled = true;
-            btnToPay.className = "w-full bg-slate-800 text-slate-500 font-bold py-3.5 px-4 rounded-2xl mt-5 cursor-not-allowed border border-slate-700/50";
+                btnToPay.className = "w-full bg-slate-800 text-slate-500 font-bold py-3.5 px-4 rounded-2xl mt-5 cursor-not-allowed border border-slate-700/50";
             }
         }
-
 
         function goToPayment() {
             document.getElementById('step-selection').classList.add('hidden');
@@ -282,17 +270,16 @@
             const previewContainer = document.getElementById('slip-preview');
     
             if (file) {
-            const reader = new FileReader();
+                const reader = new FileReader();
                 reader.onload = function(e) {
-                // เปลี่ยนเนื้อหาใน div ให้แสดงรูปที่อัปโหลด
-                previewContainer.innerHTML = `
-                <img src="${e.target.result}" class="max-h-32 mx-auto rounded-lg shadow-lg border border-slate-700">
-                <p class="text-emerald-400 mt-2 font-bold text-xs">เลือกไฟล์แล้ว: ${file.name.substring(0, 15)}...</p>
-               `;
-            }
-                reader.readAsDataURL(file);
+                    previewContainer.innerHTML = `
+                    <img src="${e.target.result}" class="max-h-32 mx-auto rounded-lg shadow-lg border border-slate-700">
+                    <p class="text-emerald-400 mt-2 font-bold text-xs">เลือกไฟล์แล้ว: ${file.name.substring(0, 15)}...</p>
+                   `;
                 }
+                reader.readAsDataURL(file);
             }
+        }
         
         async function processSlip() {
             const xUsername = document.getElementById('x-username').value.trim();
@@ -311,28 +298,22 @@
             formData.append('slip', file);
 
             try {
-                // ยิงข้อมูลไปที่หลังบ้านแบบ Serverless ของ Vercel
                 const response = await fetch('/api/report-slip', {
                     method: 'POST',
                     body: formData
                 });
 
-                // แปลงผลลัพธ์เป็น JSON 
                 const result = await response.json().catch(() => ({}));
 
-                // ถ้าสถานะอยู่ในช่วง 200-299 แปลว่าผ่านฉลุย
                 if (response.status >= 200 && response.status < 300) {
                     console.log('บันทึกข้อมูลสำเร็จ');
-                    
-                    // 🌟 รับค่าชื่อคิวที่หลังบ้านส่งกลับมา
                     generatedNames = result.generatedNames || {};
                     
-                    // เปลี่ยนหน้าไปแสดงตั๋ว
                     document.getElementById('step-payment').classList.add('hidden');
                     document.getElementById('step-tickets').classList.remove('hidden');
                     
-                    renderTickets(); // 🌟 วาดหน้าตั๋วแบบใหม่
-                    fetchSummary();  // 🌟 อัปเดตสถิติตัวเลขฝั่งซ้ายใหม่ทันที
+                    renderTickets(); 
+                    fetchSummary();  
                 } else {
                     alert(`หลังบ้านแจ้งเตือน: ${result.message || 'ระบบขัดข้องชั่วคราว'} (Status: ${response.status})`);
                     btnSubmit.disabled = false;
@@ -346,9 +327,6 @@
             }
         }
 
-        // ==========================================
-        // 🌟 ฟังก์ชัน Copy ข้อความ (คัดลอกชื่อ)
-        // ==========================================
         function copyText(id) {
             const textToCopy = document.getElementById(id).innerText;
             navigator.clipboard.writeText(textToCopy);
@@ -356,12 +334,10 @@
             const btn = document.getElementById('btn-' + id);
             const originalHTML = btn.innerHTML;
             
-            // เปลี่ยนหน้าตาปุ่มเพื่อแจ้งเตือนว่าคัดลอกสำเร็จแล้ว
             btn.innerHTML = `<i class="fa-solid fa-check mr-1"></i> คัดลอกแล้ว`;
             btn.classList.add('bg-emerald-600', 'text-white');
             btn.classList.remove('bg-indigo-600/20', 'text-indigo-400');
             
-            // ให้กลับเป็นปุ่มเดิมหลังผ่านไป 2 วินาที
             setTimeout(() => {
                 btn.innerHTML = originalHTML;
                 btn.classList.remove('bg-emerald-600', 'text-white');
@@ -369,29 +345,24 @@
             }, 2000);
         }
 
-        // ==========================================
-        // 🌟 ฟังก์ชันแสดงตั๋วแบบใหม่ (มีปุ่ม Copy และ QR Code ขนาดใหญ่)
-        // ==========================================
         function renderTickets() {
             const container = document.getElementById('tickets-container');
             container.innerHTML = ''; 
 
             const roomData = {
-                'เชียงใหม่': { qr: 'image/qr-room-chiangmai.jpg' },
-                'เกิร์ลคัพ': { qr: 'image/qr-room-girlcup.jpg' }
+                'Impact D1': { qr: 'image/qr-room-impact-d1.jpg' },
+                'Impact D2': { qr: 'image/qr-room-impact-d2.jpg' }
             };
 
             selectedRooms.forEach((roomName, index) => {
-                const data = roomData[roomName];
-                
-                // ดึงชื่อคิวจาก Object ที่ได้มาจากหลังบ้าน (ถ้าไม่มา จะใช้ชื่อห้อง-1 สำรองไว้)
+                const data = roomData[roomName] || { qr: 'image/qr-payment.jpg' };
                 const copyName = generatedNames[roomName] || `${roomName}-1`;
                 const elementId = `copyname-${index}`;
 
                 container.insertAdjacentHTML('beforeend', `
                     <div class="bg-slate-950 border border-slate-800 rounded-2xl p-5 shadow-xl transition transform hover:-translate-y-1 hover:border-indigo-500/30">
                         <div class="w-full flex justify-between items-center mb-4">
-                            <h3 class="text-lg font-black text-slate-200">ห้อง${roomName}</h3>
+                            <h3 class="text-lg font-black text-slate-200">ห้อง ${roomName}</h3>
                             <span class="text-[10px] text-slate-500 font-mono">#TKT-${Math.floor(100000 + Math.random() * 900000)}</span>
                         </div>
                         
@@ -424,8 +395,8 @@
         }
 
         function resetApp() {
-            document.getElementById('room-chiangmai').checked = false;
-            document.getElementById('room-girlcup').checked = false;
+            document.getElementById('room-Impact-D1').checked = false;
+            document.getElementById('room-Impact-D2').checked = false;
             document.getElementById('slip-file').value = '';
             document.getElementById('x-username').value = '';
             calculatePrice();
