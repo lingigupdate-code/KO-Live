@@ -72,7 +72,7 @@ export default async function handler(req, res) {
       const updatedRange = appendResult.data.updates.updatedRange; 
       const [sheetPart, rangePart] = updatedRange.split('!');
       const rows = rangePart.match(/\d+/g); 
-      const rangeForNames = `${sheetPart}!F${rows[0]}:F${rows[1] || rows[0]}`; 
+      const rangeForNames = `${sheetPart}!G${rows[0]}:G${rows[1] || rows[0]}`;
 
       // ⏳ แก้ไขจุดที่ 3: สั่งหน่วงเวลา 1.5 วินาที เพื่อรอให้ Sheet ประมวลผลสูตรคอลัมน์ F ให้เสร็จก่อน
       await delay(1500);
