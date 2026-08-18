@@ -37,21 +37,25 @@ export default async function handler(req, res) {
       const sheets = google.sheets({ version: 'v4', auth });
       const spreadsheetId = '1YSkEk2G9IyKQu0wELH1CjW6gtw83zBMyvC9_guJG4RA';
 
-      // ดึงรายชื่อห้องที่ส่งมา เช่น "ภูเก็ต, เชียงใหม่" มาแยกเป็นอาเรย์
+      // ดึงรายชื่อห้องหรือสินค้าที่ส่งมา แยกเป็นอาเรย์
       const roomsString = fields.rooms[0]; 
       const roomsArray = roomsString.split(',').map(r => r.trim()); 
 
-      // 🌟 แก้ไขจุดที่ 1: ปรับเวลาให้เป็น "เวลาประเทศไทย" (GMT+7) เสมอ
+      // ดึงข้อมูลที่อยู่จัดส่งที่ส่งมาจากหน้าบ้าน (ถ้าไม่มีให้ใส่เป็น "-")
+      const shippingAddress = fields.shippingAddress ? fields.shippingAddress[0] : "-";
+
+      // 🌟 ปรับเวลาให้เป็น "เวลาประเทศไทย" (GMT+7) เสมอ
       const thailandDateTime = new Date().toLocaleString('th-TH', { timeZone: 'Asia/Bangkok' });
 
-      // แปลงข้อมูลให้อยู่ในรูปแบบหลายแถว
+      // แปลงข้อมูลให้อยู่ในรูปแบบหลายแถว (เพิ่มคอลัมน์ที่อยู่จัดส่งเข้ามา)
       const valuesToAppend = roomsArray.map(room => [
-        thailandDateTime,    // คอลัมน์ A (เวลาไทย)
-        fields.xUsername[0], // คอลัมน์ B
-        room,                // คอลัมน์ C
-        fields.price[0],     // คอลัมน์ D
-        fileUrl,             // คอลัมน์ E
-        ""                   // คอลัมน์ F (เว้นว่างไว้ให้ ArrayFormula ใน Sheet คำนวณเอง)
+        thailandDateTime,       // คอลัมน์ A (เวลาไทย)
+        fields.xUsername[0],    // คอลัมน์ B (ชื่อ X)
+        room,                   // คอลัมน์ C (รายการ/ห้อง)
+        fields.price[0],        // คอลัมน์ D (ราคา)
+        shippingAddress,        // คอลัมน์ E (ที่อยู่จัดส่ง) 👈 เพิ่มตรงนี้
+        fileUrl,                // คอลัมน์ F (ลิงก์สลิป) 👈 ขยับมาคอลัมน์นี้
+        ""                      // คอลัมน์ G (เว้นว่างไว้ให้ ArrayFormula ใน Sheet คำนวณต่อ)
       ]);
 
       // 🌟 แก้ไขจุดที่ 2: เปลี่ยนช่วงข้อมูลเป็น Data!A1 บังคับให้เริ่มเขียนจากมุมซ้ายบน ข้อมูลจะได้ไม่กระโดด
